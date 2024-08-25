@@ -1,0 +1,3 @@
+[*.{dart,js,ts,html,css}]
+indent_style = space
+indent_size = 4

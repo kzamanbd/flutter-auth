@@ -1,4 +1,8 @@
+import 'package:auth/core/routes.dart';
+import 'package:auth/core/theme.dart';
+import 'package:auth/logic/cubits/user_cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,76 +14,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => UserCubit()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: Routes.onGenerateRoute,
+        initialRoute: 'login',
+        theme: Themes.defaultTheme,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home'),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextField(
-            controller: emailController,
-            style: const TextStyle(color: Colors.deepPurple),
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Enter your email',
-              labelText: 'Email',
-            ),
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            style: const TextStyle(color: Colors.deepPurple),
-            controller: passwordController,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Enter your password',
-              labelText: 'Password',
-            ),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    // Retrieve the text the that user has entered by using the
-                    // TextEditingController.
-                    content: Text(emailController.text),
-                  );
-                },
-              );
-            },
-            child: const Text('Login'),
-          ),
-        ],
-      ),
-    ));
   }
 }

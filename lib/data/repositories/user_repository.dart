@@ -12,7 +12,7 @@ class UserRepository {
   }) async {
     try {
       Response response = await _api.request.post(
-        '/register',
+        '/auth/register',
         data: {
           'name': name,
           'email': email,
@@ -37,7 +37,7 @@ class UserRepository {
   }) async {
     try {
       Response response = await _api.request.post(
-        '/login',
+        '/auth/login',
         data: {
           'email': email,
           'password': password,
@@ -49,6 +49,18 @@ class UserRepository {
       }
       // convert json to model
       return UserModel.fromJson(apiResponse.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      Response response = await _api.request.post('/logout');
+      ApiResponse apiResponse = ApiResponse.fromResponse(response);
+      if (!apiResponse.success) {
+        throw apiResponse.message.toString();
+      }
     } catch (e) {
       rethrow;
     }
