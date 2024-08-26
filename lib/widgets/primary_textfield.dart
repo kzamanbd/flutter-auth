@@ -6,11 +6,13 @@ class PrimaryTextfield extends StatelessWidget {
   final TextEditingController? controller;
   final String hintText;
   final bool obscureText;
+  final String? Function(String?)? validator;
 
   const PrimaryTextfield(
       {super.key,
       required this.labelText,
       this.controller,
+      this.validator,
       this.obscureText = false,
       this.hintText = ''});
 
@@ -19,6 +21,7 @@ class PrimaryTextfield extends StatelessWidget {
     return TextFormField(
       style: const TextStyle(color: AppColors.primary),
       controller: controller,
+      validator: validator,
       decoration: InputDecoration(
         border: const OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.primary),

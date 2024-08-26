@@ -13,8 +13,8 @@ class LoginProvider with ChangeNotifier {
 
   bool isLoading = false;
   String error = '';
-  final email = TextEditingController();
-  final password = TextEditingController();
+  final email = TextEditingController(text: 'kzamanbn@gmail.com');
+  final password = TextEditingController(text: 'password');
 
   final formKey = GlobalKey<FormState>();
 
@@ -27,20 +27,23 @@ class LoginProvider with ChangeNotifier {
       if (state is UserLoadingState) {
         isLoading = true;
         notifyListeners();
-      } else {
+      } else if (state is UserErrorState) {
         isLoading = false;
-        notifyListeners();
-      }
-
-      if (state is UserErrorState) {
         error = state.message;
         log("Error: $error");
+        notifyListeners();
+      } else {
+        error = '';
+        isLoading = false;
         notifyListeners();
       }
     });
   }
 
   void login() async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
     String emailValue = email.text.trim();
     String passwordValue = password.text.trim();
 

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 
 class UserRepository {
   final _api = Api();
+
   Future<UserModel> register({
     required String name,
     required String email,
@@ -49,6 +50,8 @@ class UserRepository {
       }
       // convert json to model
       return UserModel.fromJson(apiResponse.data);
+    } on DioException catch (e) {
+      throw e.response!.data['message'].toString();
     } catch (e) {
       rethrow;
     }
