@@ -1,18 +1,35 @@
+import 'package:auth/data/models/user_model.dart';
 import 'package:auth/data/repositories/user_repository.dart';
 import 'package:auth/logic/cubits/user_cubit/user_state.dart';
+import 'package:auth/logic/services/preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserCubit extends Cubit<UserState> {
   final UserRepository _userRepository = UserRepository();
 
-  UserCubit() : super(UserInitialState());
+  UserCubit() : super(UserInitialState()) {
+    _initialize();
+  }
+
+  void _initialize() async {
+    final user = await Preferences.getUserPreferences();
+    if (user != null) {
+      emit(UserAuthenticatedState(user: UserModel(user: user)));
+    }
+  }
+
+  void _emitUserState(UserModel userModel) async {
+    emit(UserAuthenticatedState(user: userModel));
+
+    await Preferences.updateUserPreferences(userModel.user!);
+  }
 
   Future<void> login({required String email, required String password}) async {
     emit(UserLoadingState());
     try {
       final user =
           await _userRepository.login(email: email, password: password);
-      emit(UserAuthenticatedState(user: user));
+      _emitUserState(user);
     } catch (e) {
       emit(UserErrorState(message: e.toString()));
     }
@@ -32,7 +49,7 @@ class UserCubit extends Cubit<UserState> {
         password: password,
         passwordConfirmation: passwordConfirmation,
       );
-      emit(UserAuthenticatedState(user: user));
+      _emitUserState(user);
     } catch (e) {
       emit(UserErrorState(message: e.toString()));
     }

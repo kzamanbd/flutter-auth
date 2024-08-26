@@ -27,6 +27,8 @@ class UserRepository {
       }
       // convert json to model
       return UserModel.fromJson(apiResponse.data);
+    } on DioException catch (e) {
+      throw e.response!.data['message'].toString();
     } catch (e) {
       rethrow;
     }
@@ -64,6 +66,8 @@ class UserRepository {
       if (!apiResponse.success) {
         throw apiResponse.message.toString();
       }
+    } on DioException catch (e) {
+      throw e.response!.data['message'].toString();
     } catch (e) {
       rethrow;
     }

@@ -1,9 +1,14 @@
-import 'package:auth/core/theme.dart';
+import 'package:auth/logic/cubits/user_cubit/user_cubit.dart';
+import 'package:auth/logic/cubits/user_cubit/user_state.dart';
 import 'package:auth/screens/auth/providers/login_provider.dart';
+import 'package:auth/screens/auth/register_screen.dart';
+import 'package:auth/screens/home/home_screen.dart';
 import 'package:auth/widgets/link_button.dart';
 import 'package:auth/widgets/primary_button.dart';
 import 'package:auth/widgets/primary_textfield.dart';
+import 'package:auth/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,9 +23,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      final provider = Provider.of<LoginProvider>(context);
-      return Scaffold(
+    final provider = Provider.of<LoginProvider>(context);
+
+    return BlocListener<UserCubit, UserState>(
+      listener: (context, state) {
+        if (state is UserAuthenticatedState) {
+          Navigator.popUntil(context, (route) => route.isFirst);
+          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        }
+      },
+      child: Scaffold(
           body: SafeArea(
         child: Form(
           key: provider.formKey,
@@ -28,10 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.all(20),
             shrinkWrap: true,
             children: [
-              const Text(
-                'Login',
-                style: TextStyles.h1,
-              ),
+              const BigText(text: 'Login'),
               const SizedBox(height: 50),
               PrimaryTextfield(
                 controller: provider.email,
@@ -90,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(width: 10),
                   LinkButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, 'register');
+                      Navigator.pushNamed(context, RegisterScreen.routeName);
                     },
                     text: 'Register',
                   ),
@@ -99,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         ),
-      ));
-    });
+      )),
+    );
   }
 }

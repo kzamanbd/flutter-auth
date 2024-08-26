@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:auth/core/routes.dart';
 import 'package:auth/core/theme.dart';
 import 'package:auth/logic/cubits/user_cubit/user_cubit.dart';
+import 'package:auth/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         onGenerateRoute: Routes.onGenerateRoute,
-        initialRoute: 'login',
+        initialRoute: SplashScreen.routeName,
         theme: Themes.defaultTheme,
       ),
     );
