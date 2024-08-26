@@ -19,8 +19,10 @@ class _SplashScreenState extends State<SplashScreen> {
     // user is authenticated
     UserState state = BlocProvider.of<UserCubit>(context).state;
     if (state is UserAuthenticatedState) {
+      Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-    } else {
+    } else if (state is UserLogoutState) {
+      Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.pushReplacementNamed(context, LoginScreen.routeName);
     }
   }
@@ -28,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 1), goToNextScreen);
+    goToNextScreen();
   }
 
   @override

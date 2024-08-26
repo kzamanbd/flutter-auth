@@ -15,6 +15,8 @@ class UserCubit extends Cubit<UserState> {
     final user = await Preferences.getUserPreferences();
     if (user != null) {
       emit(UserAuthenticatedState(user: UserModel(user: user)));
+    } else {
+      emit(UserLogoutState());
     }
   }
 
