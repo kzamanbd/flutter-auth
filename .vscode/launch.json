@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "auth",
+            "name": "FlutterAuth",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "auth (profile mode)",
+            "name": "FlutterAuth (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "auth (release mode)",
+            "name": "FlutterAuth (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

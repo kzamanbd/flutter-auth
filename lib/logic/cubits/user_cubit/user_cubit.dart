@@ -60,8 +60,8 @@ class UserCubit extends Cubit<UserState> {
   Future<void> logout() async {
     emit(UserLoadingState());
     try {
-      await _userRepository.logout();
       emit(UserLogoutState());
+      await Preferences.clearUserPreferences();
     } catch (e) {
       emit(UserErrorState(message: e.toString()));
     }

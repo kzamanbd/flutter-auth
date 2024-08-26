@@ -22,4 +22,9 @@ class Preferences {
 
     return null;
   }
+
+  static Future<void> clearUserPreferences() async {
+    SharedPreferences instance = await SharedPreferences.getInstance();
+    await instance.clear();
+  }
 }

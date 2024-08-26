@@ -1,5 +1,5 @@
 import 'package:auth/screens/auth/login_screen.dart';
-import 'package:auth/screens/auth/providers/register_provider.dart';
+import 'package:auth/screens/auth/providers/auth_provider.dart';
 import 'package:auth/widgets/link_button.dart';
 import 'package:auth/widgets/primary_button.dart';
 import 'package:auth/widgets/primary_textfield.dart';
@@ -19,7 +19,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<RegisterProvider>(context);
+    final provider = Provider.of<AuthProvider>(context);
     return Scaffold(
         body: SafeArea(
       child: Form(

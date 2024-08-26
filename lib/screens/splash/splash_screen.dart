@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auth/logic/cubits/user_cubit/user_cubit.dart';
 import 'package:auth/logic/cubits/user_cubit/user_state.dart';
 import 'package:auth/screens/auth/login_screen.dart';
@@ -30,7 +32,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    goToNextScreen();
+    Timer(const Duration(microseconds: 100), () {
+      goToNextScreen();
+    });
   }
 
   @override

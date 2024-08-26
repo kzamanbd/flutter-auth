@@ -1,6 +1,6 @@
 import 'package:auth/logic/cubits/user_cubit/user_cubit.dart';
 import 'package:auth/logic/cubits/user_cubit/user_state.dart';
-import 'package:auth/screens/auth/providers/login_provider.dart';
+import 'package:auth/screens/auth/providers/auth_provider.dart';
 import 'package:auth/screens/auth/register_screen.dart';
 import 'package:auth/screens/home/home_screen.dart';
 import 'package:auth/widgets/link_button.dart';
@@ -23,7 +23,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<LoginProvider>(context);
+    final provider = Provider.of<AuthProvider>(context);
 
     return BlocListener<UserCubit, UserState>(
       listener: (context, state) {
