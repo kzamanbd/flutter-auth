@@ -34,78 +34,80 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       child: Scaffold(
           body: SafeArea(
-        child: Form(
-          key: provider.formKey,
-          child: ListView(
-            padding: const EdgeInsets.all(20),
-            shrinkWrap: true,
-            children: [
-              const BigText(text: 'Login'),
-              const SizedBox(height: 50),
-              PrimaryTextfield(
-                controller: provider.email,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Email is required';
-                  }
-                  return null;
-                },
-                hintText: 'Enter your email',
-                labelText: 'Email',
-              ),
-              const SizedBox(height: 20),
-              PrimaryTextfield(
-                controller: provider.password,
-                hintText: 'Enter your password',
-                labelText: 'Password',
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Password is required';
-                  }
-                  return null;
-                },
-                obscureText: true,
-              ),
-              if (provider.error.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Text(
-                    provider.error,
-                    style: const TextStyle(color: Colors.red),
-                  ),
+        child: Center(
+          child: Form(
+            key: provider.formKey,
+            child: ListView(
+              padding: const EdgeInsets.all(20),
+              shrinkWrap: true,
+              children: [
+                const BigText(text: 'Login'),
+                const SizedBox(height: 50),
+                PrimaryTextfield(
+                  controller: provider.email,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Email is required';
+                    }
+                    return null;
+                  },
+                  hintText: 'Enter your email',
+                  labelText: 'Email',
                 ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  LinkButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, 'forgot-password');
-                    },
-                    text: 'Forgot your password?',
+                const SizedBox(height: 20),
+                PrimaryTextfield(
+                  controller: provider.password,
+                  hintText: 'Enter your password',
+                  labelText: 'Password',
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Password is required';
+                    }
+                    return null;
+                  },
+                  obscureText: true,
+                ),
+                if (provider.error.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Text(
+                      provider.error,
+                      style: const TextStyle(color: Colors.red),
+                    ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              PrimaryButton(
-                onPressed: provider.login,
-                text: provider.isLoading ? 'Loading...' : 'Login',
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Don\'t have an account?'),
-                  const SizedBox(width: 10),
-                  LinkButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, RegisterScreen.routeName);
-                    },
-                    text: 'Register',
-                  ),
-                ],
-              ),
-            ],
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    LinkButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'forgot-password');
+                      },
+                      text: 'Forgot your password?',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                PrimaryButton(
+                  onPressed: provider.login,
+                  text: provider.isLoading ? 'Loading...' : 'Login',
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Don\'t have an account?'),
+                    const SizedBox(width: 10),
+                    LinkButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, RegisterScreen.routeName);
+                      },
+                      text: 'Register',
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       )),

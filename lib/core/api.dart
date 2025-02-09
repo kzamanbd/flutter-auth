@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-const String baseURL = "http://192.168.2.139:8000/api";
+const String baseURL = "http://192.168.0.106:8000/api";
 
 class Api {
   final Dio _dio = Dio();
