@@ -1,7 +1,7 @@
-import 'package:auth/providers/user_provider.dart';
-import 'package:auth/providers/user_state.dart';
+import 'package:auth/data/models/user_model.dart';
 import 'package:auth/pages/auth/auth_notifier.dart';
 import 'package:auth/pages/splash/splash_screen.dart';
+import 'package:auth/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,8 +18,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final authNotifier = ref.watch(authNotifierProvider);
 
-    ref.listen<UserState>(userProvider, (previous, next) {
-      if (next is UserLogoutState) {
+    ref.listen<AsyncValue<UserModel?>>(userProvider, (previous, next) {
+      if (next.value == null && !next.isLoading && !next.hasError) {
         Navigator.popUntil(context, (route) => route.isFirst);
         Navigator.pushReplacementNamed(context, SplashScreen.routeName);
       }

@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:auth/providers/user_provider.dart';
-import 'package:auth/providers/user_state.dart';
+import 'package:auth/data/models/user_model.dart';
 import 'package:auth/pages/auth/login_screen.dart';
 import 'package:auth/pages/home/home_screen.dart';
+import 'package:auth/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,12 +18,19 @@ class SplashScreen extends ConsumerStatefulWidget {
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   void goToNextScreen() {
-    // user is authenticated
-    UserState state = ref.read(userProvider);
-    if (state is UserAuthenticatedState) {
-      Navigator.popUntil(context, (route) => route.isFirst);
-      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-    } else if (state is UserLogoutState) {
+    final state = ref.read(userProvider);
+    if (state.isLoading) return;
+
+    if (state.hasValue) {
+      final user = state.value;
+      if (user != null) {
+        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      } else {
+        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+      }
+    } else if (state.hasError) {
       Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.pushReplacementNamed(context, LoginScreen.routeName);
     }
@@ -39,7 +46,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<UserState>(userProvider, (previous, next) {
+    ref.listen<AsyncValue<UserModel?>>(userProvider, (previous, next) {
       goToNextScreen();
     });
 

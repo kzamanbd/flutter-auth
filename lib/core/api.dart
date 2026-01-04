@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-const String baseURL = "https://kzaman.me/api";
+const String baseURL = "https://www.kzaman.me/api";
 
 class Api {
   final Dio _dio = Dio();
@@ -85,7 +85,12 @@ class ApiResponse {
 
   factory ApiResponse.fromResponse(Response response) {
     final data = response.data as Map<String, dynamic>;
-    return ApiResponse(
-        success: data['success'], data: data['data'], message: data['message']);
+    if (data.containsKey('success')) {
+      return ApiResponse(
+          success: data['success'],
+          data: data['data'],
+          message: data['message']);
+    }
+    return ApiResponse(success: true, data: data, message: null);
   }
 }

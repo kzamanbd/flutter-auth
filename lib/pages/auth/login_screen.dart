@@ -1,8 +1,8 @@
-import 'package:auth/providers/user_provider.dart';
-import 'package:auth/providers/user_state.dart';
+import 'package:auth/data/models/user_model.dart';
 import 'package:auth/pages/auth/auth_notifier.dart';
 import 'package:auth/pages/auth/register_screen.dart';
 import 'package:auth/pages/home/home_screen.dart';
+import 'package:auth/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,8 +20,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final provider = ref.watch(authNotifierProvider);
 
-    ref.listen<UserState>(userProvider, (previous, next) {
-      if (next is UserAuthenticatedState) {
+    ref.listen<AsyncValue<UserModel?>>(userProvider, (previous, next) {
+      if (next.value != null) {
         Navigator.popUntil(context, (route) => route.isFirst);
         Navigator.pushReplacementNamed(context, HomeScreen.routeName);
       }

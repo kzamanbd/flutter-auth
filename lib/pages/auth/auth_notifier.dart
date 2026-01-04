@@ -1,5 +1,5 @@
+import 'package:auth/data/models/user_model.dart';
 import 'package:auth/providers/user_provider.dart';
-import 'package:auth/providers/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,12 +17,12 @@ class AuthNotifier extends ChangeNotifier {
 
   final formKey = GlobalKey<FormState>();
 
-  void updateState(UserState state) {
-    if (state is UserLoadingState) {
+  void updateState(AsyncValue<UserModel?> state) {
+    if (state.isLoading) {
       isLoading = true;
-    } else if (state is UserErrorState) {
+    } else if (state.hasError) {
       isLoading = false;
-      error = state.message;
+      error = state.error.toString();
     } else {
       error = '';
       isLoading = false;
@@ -68,7 +68,7 @@ class AuthNotifier extends ChangeNotifier {
 final authNotifierProvider =
     ChangeNotifierProvider.autoDispose<AuthNotifier>((ref) {
   final notifier = AuthNotifier(ref);
-  ref.listen<UserState>(userProvider, (previous, next) {
+  ref.listen<AsyncValue<UserModel?>>(userProvider, (previous, next) {
     notifier.updateState(next);
   });
   return notifier;
