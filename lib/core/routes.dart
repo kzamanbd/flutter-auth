@@ -1,9 +1,9 @@
-import 'package:auth/screens/auth/login_screen.dart';
-import 'package:auth/screens/auth/not_found_screen.dart';
-import 'package:auth/screens/auth/providers/auth_provider.dart';
-import 'package:auth/screens/auth/register_screen.dart';
-import 'package:auth/screens/home/home_screen.dart';
-import 'package:auth/screens/splash/splash_screen.dart';
+import 'package:auth/pages/auth/login_screen.dart';
+import 'package:auth/pages/auth/not_found_screen.dart';
+import 'package:auth/pages/auth/providers/auth_provider.dart';
+import 'package:auth/pages/auth/register_screen.dart';
+import 'package:auth/pages/home/home_screen.dart';
+import 'package:auth/pages/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 

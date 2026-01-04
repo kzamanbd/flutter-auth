@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:auth/logic/cubits/user_cubit/user_cubit.dart';
 import 'package:auth/logic/cubits/user_cubit/user_state.dart';
-import 'package:auth/screens/auth/login_screen.dart';
-import 'package:auth/screens/home/home_screen.dart';
+import 'package:auth/pages/auth/login_screen.dart';
+import 'package:auth/pages/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
