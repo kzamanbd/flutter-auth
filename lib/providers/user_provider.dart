@@ -12,11 +12,7 @@ class UserNotifier extends AsyncNotifier<UserModel?> {
   }
 
   Future<UserModel?> _initialize() async {
-    final user = await Preferences.getUserPreferences();
-    if (user != null) {
-      return UserModel(user: user);
-    }
-    return null;
+    return await Preferences.getUserModel();
   }
 
   Future<void> login({required String email, required String password}) async {
@@ -24,7 +20,7 @@ class UserNotifier extends AsyncNotifier<UserModel?> {
     state = await AsyncValue.guard(() async {
       final user =
           await _userRepository.login(email: email, password: password);
-      await Preferences.updateUserPreferences(user.user!);
+      await Preferences.saveUserModel(user);
       return user;
     });
   }
@@ -43,7 +39,7 @@ class UserNotifier extends AsyncNotifier<UserModel?> {
         password: password,
         passwordConfirmation: passwordConfirmation,
       );
-      await Preferences.updateUserPreferences(user.user!);
+      await Preferences.saveUserModel(user);
       return user;
     });
   }
