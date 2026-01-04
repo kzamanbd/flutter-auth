@@ -1,39 +1,40 @@
 import 'package:auth/data/models/user_model.dart';
 import 'package:auth/data/repositories/user_repository.dart';
-import 'package:auth/logic/cubits/user_cubit/user_state.dart';
-import 'package:auth/logic/services/preferences.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:auth/providers/user_state.dart';
+import 'package:auth/services/preferences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserCubit extends Cubit<UserState> {
+class UserNotifier extends Notifier<UserState> {
   final UserRepository _userRepository = UserRepository();
 
-  UserCubit() : super(UserInitialState()) {
+  @override
+  UserState build() {
     _initialize();
+    return UserInitialState();
   }
 
   void _initialize() async {
     final user = await Preferences.getUserPreferences();
     if (user != null) {
-      emit(UserAuthenticatedState(user: UserModel(user: user)));
+      state = UserAuthenticatedState(user: UserModel(user: user));
     } else {
-      emit(UserLogoutState());
+      state = UserLogoutState();
     }
   }
 
   void _emitUserState(UserModel userModel) async {
-    emit(UserAuthenticatedState(user: userModel));
-
+    state = UserAuthenticatedState(user: userModel);
     await Preferences.updateUserPreferences(userModel.user!);
   }
 
   Future<void> login({required String email, required String password}) async {
-    emit(UserLoadingState());
+    state = UserLoadingState();
     try {
       final user =
           await _userRepository.login(email: email, password: password);
       _emitUserState(user);
     } catch (e) {
-      emit(UserErrorState(message: e.toString()));
+      state = UserErrorState(message: e.toString());
     }
   }
 
@@ -43,7 +44,7 @@ class UserCubit extends Cubit<UserState> {
     required String password,
     required String passwordConfirmation,
   }) async {
-    emit(UserLoadingState());
+    state = UserLoadingState();
     try {
       final user = await _userRepository.register(
         name: name,
@@ -53,17 +54,20 @@ class UserCubit extends Cubit<UserState> {
       );
       _emitUserState(user);
     } catch (e) {
-      emit(UserErrorState(message: e.toString()));
+      state = UserErrorState(message: e.toString());
     }
   }
 
   Future<void> logout() async {
-    emit(UserLoadingState());
+    state = UserLoadingState();
     try {
-      emit(UserLogoutState());
+      state = UserLogoutState();
       await Preferences.clearUserPreferences();
     } catch (e) {
-      emit(UserErrorState(message: e.toString()));
+      state = UserErrorState(message: e.toString());
     }
   }
 }
+
+final userProvider =
+    NotifierProvider<UserNotifier, UserState>(UserNotifier.new);

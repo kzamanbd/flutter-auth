@@ -1,21 +1,31 @@
+import 'package:auth/providers/user_provider.dart';
+import 'package:auth/providers/user_state.dart';
+import 'package:auth/pages/auth/auth_notifier.dart';
 import 'package:auth/pages/auth/login_screen.dart';
-import 'package:auth/pages/auth/providers/auth_provider.dart';
+import 'package:auth/pages/home/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
   static const routeName = 'register';
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<AuthProvider>(context);
+    final provider = ref.watch(authNotifierProvider);
+
+    ref.listen<UserState>(userProvider, (previous, next) {
+      if (next is UserAuthenticatedState) {
+        Navigator.popUntil(context, (route) => route.isFirst);
+        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      }
+    });
 
     return Scaffold(
       body: Container(

@@ -1,25 +1,25 @@
 import 'dart:async';
 
-import 'package:auth/logic/cubits/user_cubit/user_cubit.dart';
-import 'package:auth/logic/cubits/user_cubit/user_state.dart';
+import 'package:auth/providers/user_provider.dart';
+import 'package:auth/providers/user_state.dart';
 import 'package:auth/pages/auth/login_screen.dart';
 import 'package:auth/pages/home/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   static const routeName = 'splash';
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   void goToNextScreen() {
     // user is authenticated
-    UserState state = BlocProvider.of<UserCubit>(context).state;
+    UserState state = ref.read(userProvider);
     if (state is UserAuthenticatedState) {
       Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.pushReplacementNamed(context, HomeScreen.routeName);
@@ -39,13 +39,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserCubit, UserState>(
-      listener: (context, state) {
-        goToNextScreen();
-      },
-      child: const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      ),
+    ref.listen<UserState>(userProvider, (previous, next) {
+      goToNextScreen();
+    });
+
+    return const Scaffold(
+      body: Center(child: CircularProgressIndicator()),
     );
   }
 }
